@@ -25,6 +25,7 @@ def generate_token(
     payload = {
         "user_id": user_id,
         "email": email,
+        "role": role,
         "is_activated": is_activated,
         "unique_id": unique_id,
         "exp": datetime.utcnow() + timedelta(hours=expiry_hours),
@@ -44,6 +45,7 @@ def register_user(
     password: str = Form(..., description="Password of the user"),
     number: str = Form(None, description="Phone number of the user"),
     email: str = Form(..., description="Email address of the user"),
+    role: str = Form(..., description="Role of the user"),
 ):
     try:
         # Check if username is already used
@@ -72,6 +74,7 @@ def register_user(
             password=hashed_password,
             number=number,
             email=email,
+            role=role,
             is_activate=False,
         )
         user_info_dict = user_info.dict()
@@ -191,6 +194,7 @@ def register_user(
             "password": password,
             "number": number,
             "email": email,
+            "role": role,
             "token": token,
         }
     )

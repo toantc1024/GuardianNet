@@ -30,7 +30,7 @@ class Constants:
     # Get collections
     USERS = db.get_collection("USERS")
     USER_TOKENS = db.get_collection("USER_TOKENS")
-
+    WEB_ACCESS = db.get_collection("WEB_ACCESS")
 # Define Message class
 class Message(BaseModel):
     message: str
