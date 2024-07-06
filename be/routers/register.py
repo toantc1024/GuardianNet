@@ -16,7 +16,11 @@ router = APIRouter(prefix="/api/guardiannet", tags=["User Register"])
 
 
 def generate_token(
-    user_id: str, email: str, is_activated: bool, expiry_hours: int = 24
+    user_id: str, 
+    role: str, # is "bussines" or "normal" account
+    email: str, 
+    is_activated: bool, 
+    expiry_hours: int = 24
 ):
     secret_key = os.getenv(
         "JWT_SECRET", "649fb93ef34e4fdf4187709c84d643dd61ce730d91856418fdcf563f895ea40f"
