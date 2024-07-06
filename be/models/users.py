@@ -18,8 +18,7 @@ class UserInfo(BaseModel):
     username: str = Field(..., description="Username of the user")
     password: str = Field(..., description="Password of the user")
     number: Optional[str] = Field(None, description="Phone number of the user")
-    preference_field: Optional[str] = Field(None, description="Interest Field")
-    level: Optional[str] = Field(None, description="Level of the user")
+    role: str = Field(None, description="Interest Field")
     email: EmailStr = Field(..., description="Email address of the user")
     created_at: datetime = Field(
         default_factory=datetime.now, description="Creation timestamp of the user"
