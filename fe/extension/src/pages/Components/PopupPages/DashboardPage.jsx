@@ -1,5 +1,5 @@
 import React from 'react';
-import { Setting2 } from 'iconsax-react';
+import { Coin, Setting2 } from 'iconsax-react';
 const DashboardPageHeader = () => {
   return (
     <div className="w-full flex justify-between  p-4">
@@ -11,13 +11,13 @@ const DashboardPageHeader = () => {
           <span>Active</span>
         </div>
       </div>
-
-      <div className="flex items-center justify-center">
-        <Setting2 className="text-4xl" />
-      </div>
     </div>
   );
 };
+
+import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
+import { Button, Card, Col, Row, Statistic } from 'antd';
+const Stats = () => <div className="h-full w-full px-4 bg-red-400">HE</div>;
 
 import { Carousel } from 'antd';
 const contentStyle = {
@@ -28,22 +28,20 @@ const contentStyle = {
   textAlign: 'center',
 };
 const DashboardCaroseul = () => {
-  const onChange = (currentSlide) => {
-    console.log(currentSlide);
-  };
   return (
-    <Carousel afterChange={onChange}>
-      <div>
-        <h3 style={contentStyle}>
-          <div className="p-8 pb-16">
-            <div className="bg-red-500">Hello</div>
-          </div>
-        </h3>
-      </div>
-      <div>
-        <h3 style={contentStyle}>4</h3>
-      </div>
-    </Carousel>
+    <div className="p-2 flex gap-2 flex-col">
+      <Card bordered={false}>
+        <Statistic
+          title="Active"
+          value={11.28}
+          precision={2}
+          valueStyle={{ color: '#3f8600' }}
+          prefix={<Coin />}
+          suffix="netCoin"
+        />
+      </Card>
+      <Button>Widthdraw now</Button>
+    </div>
   );
 };
 
