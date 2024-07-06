@@ -1,0 +1,42 @@
+{
+  "description": "🐱‍💻 Parent-control blockchain-based extension!",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "name": "GuardianNet",
+  "options_page": "options.html",
+  "background": { "service_worker": "background.bundle.js" },
+  "action": { "default_popup": "popup.html", "default_icon": "icon-34.png" },
+  "icons": { "128": "icon-128.png" },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*", "<all_urls>"],
+      "js": ["contentScript.bundle.js"],
+      "css": ["content.styles.css"],
+      "all_frames": true
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
+  },
+  "permissions": ["tts", "ttsEngine", "storage", "tabs", "contextMenus"],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "content.styles.css",
+        "icon-128.png",
+        "icon-34.png",
+        "tomato.png"
+      ],
+      "matches": ["<all_urls>", "http://*/*", "https://*/*"]
+    }
+  ],
+  "commands": {
+    "translate": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+X",
+        "mac": "Command+Shift+X"
+      },
+      "description": "Translate selected text."
+    }
+  }
+}

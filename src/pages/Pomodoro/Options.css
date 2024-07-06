@@ -1,0 +1,14 @@
+.OptionsContainer {
+  width: 100%;
+  height: 100vh;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+*,
+body,
+html {
+  font-family: Fredoka, sans-serif;
+}
