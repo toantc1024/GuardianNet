@@ -31,7 +31,7 @@ app.get("/")(lambda: {"message": "Welcome to GuardianNet!!!!!!!!!!"})
 app.include_router(register.router)
 app.include_router(login.router)
 app.include_router(activate_account.router)
-# app.include_router(web.router)
+app.include_router(web.router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", workers=-1, host="0.0.0.0", port=8080)
