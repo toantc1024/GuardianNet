@@ -6,8 +6,7 @@ import {
   CHILDREN_PAGE,
   DASHBOARD_PAGE,
 } from '../../../constants/popup_page';
-import { BsHeartFill, BsPeopleFill, BsPlayFill } from 'react-icons/bs';
-import { RiHeart2Fill, RiHome5Fill } from 'react-icons/ri';
+import { Home, PlayCircle, Heart, Profile2User } from 'iconsax-react';
 const IconButton = ({ icon, onClickHandler, isActive, activeIcon }) => {
   return (
     <div
@@ -24,16 +23,66 @@ const BottomNavbar = ({ page, setPage }) => {
     <div className="flex py-4 items-center justify-between px-16">
       <IconButton
         onClickHandler={() => setPage(DASHBOARD_PAGE)}
-        icon={<RiHome5Fill className="text-gray-400" />}
-        isActive={page == DASHBOARD_PAGE}
-        activeIcon={<RiHome5Fill className="text-violet-600" />}
+        icon={
+          <Home
+            size="32"
+            className="text-gray-400 hover:text-gray-300 transition-text ease-in-out-duration-150"
+            variant="Bold"
+          />
+        }
+        isActive={page === DASHBOARD_PAGE}
+        activeIcon={
+          <Home size="32" className="text-violet-400" variant="Bold" />
+        }
       />
-
+      <IconButton
+        onClickHandler={() => setPage(LOCATION_PAGE)}
+        icon={
+          <PlayCircle
+            size="32"
+            className="text-gray-400 hover:text-gray-300 transition-text ease-in-out-duration-150"
+            variant="Bold"
+          />
+        }
+        isActive={page === LOCATION_PAGE}
+        activeIcon={
+          <PlayCircle size="32" className="text-yellow-400" variant="Bold" />
+        }
+      />
+      <IconButton
+        onClickHandler={() => setPage(WEB_FILTERING_PAGE)}
+        icon={
+          <Heart
+            size="32"
+            className="text-gray-400 hover:text-violet-200 transition-text ease-in-out-duration-150"
+            variant="Bold"
+          />
+        }
+        isActive={page == WEB_FILTERING_PAGE}
+        activeIcon={
+          <Heart size="32" className="text-pink-400" variant="Bold" />
+        }
+      />
+      <IconButton
+        onClickHandler={() => setPage(CHILDREN_PAGE)}
+        icon={
+          <Profile2User
+            size="32"
+            className="text-gray-400 hover:text-violet-200 transition-text ease-in-out-duration-150"
+            variant="Bold"
+          />
+        }
+        isActive={page == CHILDREN_PAGE}
+        activeIcon={
+          <Profile2User size="32" className="text-green-500" variant="Bold" />
+        }
+      />
+      {/* 
       <IconButton
         onClickHandler={() => setPage(WEB_FILTERING_PAGE)}
         icon={<BsPlayFill className="text-gray-400" />}
         isActive={page == WEB_FILTERING_PAGE}
-        activeIcon={<BsPlayFill className="text-yellow-400" />}
+        activeIcon={<PlayCircle className="text-yellow-400" />}
       />
       <IconButton
         onClickHandler={() => setPage(LOCATION_PAGE)}
@@ -46,7 +95,7 @@ const BottomNavbar = ({ page, setPage }) => {
         onClickHandler={() => setPage(CHILDREN_PAGE)}
         isActive={page == CHILDREN_PAGE}
         activeIcon={<BsPeopleFill className="text-green-600" />}
-      />
+      /> */}
     </div>
   );
 };

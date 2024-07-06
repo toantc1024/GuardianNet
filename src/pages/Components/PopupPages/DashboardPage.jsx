@@ -1,8 +1,8 @@
 import React from 'react';
-import { HiCog } from 'react-icons/hi';
+import { Setting2 } from 'iconsax-react';
 const DashboardPageHeader = () => {
   return (
-    <div className="w-full flex justify-between bg-red-400 p-4">
+    <div className="w-full flex justify-between  p-4">
       <div className="flex justify-between gap-4 items-center">
         {/* Avatar */}
         <div className="w-10 h-10 rounded-full bg-red-900"></div>
@@ -13,7 +13,7 @@ const DashboardPageHeader = () => {
       </div>
 
       <div className="flex items-center justify-center">
-        <HiCog className="text-4xl" />
+        <Setting2 className="text-4xl" />
       </div>
     </div>
   );

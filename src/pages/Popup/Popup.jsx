@@ -13,7 +13,7 @@ const Popup = () => {
   const [currentPage, setCurrentPage] = useState(DASHBOARD_PAGE);
   return (
     <div className="h-screen w-full flex flex-col">
-      <div className="h-full bg-sky-900">
+      <div className="h-full ">
         {currentPage == DASHBOARD_PAGE ? <DashboardPage /> : null}
       </div>
       <BottomNavbar
