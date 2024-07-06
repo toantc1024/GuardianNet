@@ -18,7 +18,7 @@ async def create_wallet(email: str = Form(..., description="Email address of the
         raise HTTPException(status_code=409, detail="Wallet already exists")
 
     wallet = Wallet(
-        user_id=ObjectId(user_id),
+        user_id=user_id,
         balance=0.0,
         created_at=datetime.utcnow(),
         updated_at=datetime.utcnow()
@@ -45,7 +45,7 @@ async def add_money(
     new_balance = wallet["balance"] + amount
 
     Constants.WALLETS.update_one(
-        {"user_id": ObjectId(user_id)},
+        {"user_id": user_id},
         {"$set": {"balance": new_balance, "updated_at": datetime.utcnow()}}
     )
 
@@ -70,7 +70,7 @@ async def spend_money(
         raise HTTPException(status_code=404, detail="User not found")
 
     user_id = str(user["_id"])
-    wallet = Constants.WALLETS.find_one({"user_id": ObjectId(user_id)})
+    wallet = Constants.WALLETS.find_one({"user_id": user_id})
     if not wallet:
         raise HTTPException(status_code=404, detail="Wallet not found")
 
@@ -80,12 +80,12 @@ async def spend_money(
     new_balance = wallet["balance"] - amount
 
     Constants.WALLETS.update_one(
-        {"user_id": ObjectId(user_id)},
+        {"user_id": user_id},
         {"$set": {"balance": new_balance, "updated_at": datetime.utcnow()}}
     )
 
     transaction = Transaction(
-        user_id=ObjectId(user_id),
+        user_id=user_id,
         amount=amount,
         type="debit",
         created_at=datetime.utcnow()
