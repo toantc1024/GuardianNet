@@ -6,7 +6,7 @@ import {
   CHILDREN_PAGE,
   DASHBOARD_PAGE,
 } from '../../../constants/popup_page';
-import { Home, PlayCircle, Heart, Profile2User } from 'iconsax-react';
+import { Home, Book, User } from 'iconsax-react';
 const IconButton = ({ icon, onClickHandler, isActive, activeIcon }) => {
   return (
     <div
@@ -17,7 +17,6 @@ const IconButton = ({ icon, onClickHandler, isActive, activeIcon }) => {
     </div>
   );
 };
-
 const BottomNavbar = ({ page, setPage }) => {
   return (
     <div className="flex py-4 items-center justify-between px-16">
@@ -38,7 +37,7 @@ const BottomNavbar = ({ page, setPage }) => {
       <IconButton
         onClickHandler={() => setPage(LOCATION_PAGE)}
         icon={
-          <PlayCircle
+          <Book
             size="32"
             className="text-gray-400 hover:text-gray-300 transition-text ease-in-out-duration-150"
             variant="Bold"
@@ -46,27 +45,14 @@ const BottomNavbar = ({ page, setPage }) => {
         }
         isActive={page === LOCATION_PAGE}
         activeIcon={
-          <PlayCircle size="32" className="text-yellow-400" variant="Bold" />
+          <Book size="32" className="text-yellow-400" variant="Bold" />
         }
       />
-      <IconButton
-        onClickHandler={() => setPage(WEB_FILTERING_PAGE)}
-        icon={
-          <Heart
-            size="32"
-            className="text-gray-400 hover:text-violet-200 transition-text ease-in-out-duration-150"
-            variant="Bold"
-          />
-        }
-        isActive={page == WEB_FILTERING_PAGE}
-        activeIcon={
-          <Heart size="32" className="text-pink-400" variant="Bold" />
-        }
-      />
+
       <IconButton
         onClickHandler={() => setPage(CHILDREN_PAGE)}
         icon={
-          <Profile2User
+          <User
             size="32"
             className="text-gray-400 hover:text-violet-200 transition-text ease-in-out-duration-150"
             variant="Bold"
@@ -74,7 +60,7 @@ const BottomNavbar = ({ page, setPage }) => {
         }
         isActive={page == CHILDREN_PAGE}
         activeIcon={
-          <Profile2User size="32" className="text-green-500" variant="Bold" />
+          <User size="32" className="text-green-500" variant="Bold" />
         }
       />
       {/* 
