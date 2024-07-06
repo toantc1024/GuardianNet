@@ -22,3 +22,17 @@
 
 # secrets
 secrets.*.js
+
+node_modules
+dist
+build
+
+.vscode
+.idea
+.env
+env
+.env
+.env.local
+.env.example
+
+**/__pycache__/
