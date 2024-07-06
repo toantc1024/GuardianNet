@@ -17,42 +17,13 @@ class UserInfo(BaseModel):
 
     username: str = Field(..., description="Username of the user")
     password: str = Field(..., description="Password of the user")
-    number: Optional[str] = Field(None, description="Phone number of the user")
-    role: str = Field(None, description="Interest Field")
-    email: EmailStr = Field(..., description="Email address of the user")
-    created_at: datetime = Field(
-        default_factory=datetime.now, description="Creation timestamp of the user"
-    )
-    is_activate: bool = Field(
-        default=False, description="Check if the user account is activated"
-    )
-    verified_at: Optional[datetime] = Field(
-        default=None, description="Verify account activated timestamp"
-    )
-    updated_at: Optional[datetime] = Field(
-        default=None, description="Verify account activated timestamp"
-    )
+    age: str = Field(..., description="Age")
+    role: str = Field(..., description="Bussiness or normal account")
+    is_subcribed: bool = Field(..., description="Subcribed or not")
+    wallet_address: str = Field(..., description="Wallet address")
 
     def get_context_string(self, context: str):
         return f"{context}{self.password[-6:]}{self.updated_at.strftime('%m%d%Y%H%M%S')}".strip()
-
-    @validator("number")
-    def validate_number(cls, v):
-        if v is None:
-            return v
-        elif not v.isdigit() or len(v) != 10:
-            raise ValueError(
-                "Invalid phone number format. It should be a 10-digit number."
-            )
-        return v
-
-    @validator("email")
-    def validate_email(cls, v):
-        try:
-            validate_email(v, allow_smtputf8=False)
-        except Exception as e:
-            raise ValueError(f"Invalid email address: {e}")
-        return v
 
     @validator("username")
     def validate_username(cls, v):
@@ -61,11 +32,3 @@ class UserInfo(BaseModel):
                 "Username should not contain spaces or special characters."
             )
         return v
-
-
-class UserToken(BaseModel):
-    user_id: Optional[str]  # Reference to the user
-    access_key: Optional[str] = None
-    refresh_key: Optional[str] = None
-    created_at: Optional[datetime] = None
-    expires_at: Optional[datetime] = None
