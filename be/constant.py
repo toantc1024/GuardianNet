@@ -32,7 +32,7 @@ class Constants:
     USER_TOKENS = db.get_collection("USER_TOKENS")
     WEB_ACCESS = db.get_collection("WEB_ACCESS")
     WALLETS = db.get_collection("WALLETS")
-    TRANSACTIONS = db.get_collection("TRANSACTIONS")
+    WIDTHDRAW = db.get_collection("WIDTHDRAW")
 # Define Message class
 class Message(BaseModel):
     message: str

@@ -7,8 +7,6 @@ app = FastAPI()
 # Example model for web access data
 class WebAccessData(BaseModel):
     user_id: str
-    username: str
-    email: str
     web_url: str
     title: str
     access_time: datetime
