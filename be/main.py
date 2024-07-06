@@ -6,7 +6,7 @@ import logging_setup  # setup logging
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import register, login, activate_account
+from routers import register, login, activate_account, web
 
 logger = logging.getLogger("Backend")
 
@@ -31,6 +31,7 @@ app.get("/")(lambda: {"message": "Welcome to GuardianNet!!!!!!!!!!"})
 app.include_router(register.router)
 app.include_router(login.router)
 app.include_router(activate_account.router)
+# app.include_router(web.router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", workers=-1, host="0.0.0.0", port=8080)
