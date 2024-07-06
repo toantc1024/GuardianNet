@@ -1,0 +1,1 @@
+export const ADD_PAGE_COMMAND = 'ADD_PAGE_COMMAND';
