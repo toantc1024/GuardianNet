@@ -1,8 +1,7 @@
 import { ADD_PAGE_COMMAND } from '../../constants/message';
 
-
-
-(async () => {
+// Listen to DOMContentLoaded event
+const collectData = async () => {
   const response = await chrome.runtime.sendMessage({
     type: ADD_PAGE_COMMAND,
     data: {
@@ -26,4 +25,6 @@ import { ADD_PAGE_COMMAND } from '../../constants/message';
       access_time: new Date().toISOString(),
     },
   });
-})();
+};
+
+collectData();

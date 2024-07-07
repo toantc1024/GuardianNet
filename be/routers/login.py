@@ -7,20 +7,23 @@ import bcrypt
 from datetime import datetime, timedelta
 from utils.token import unique_string
 
+from pydantic import BaseModel
 router = APIRouter(prefix="/api/guardiannet", tags=["User Login"])
 
+class Login(BaseModel):
+    username: str
+    password: str
 
 @router.post("/login", responses={401: {"model": Message}, 404: {"model": Message}})
 def login(
-    username: str = Form(..., description="Username of the user"),
-    password: str = Form(..., description="Password of the user"),
+ data: Login
 ):
     # Find the user account in the database
-    account = Constants.USERS.find_one({"username": username})
+    account = Constants.USERS.find_one({"username": data.username})
     
     if account:
         # Compare the entered password with the stored hashed password
-        if bcrypt.checkpw(password.encode("utf-8"), account["password"].encode("utf-8")):
+        if bcrypt.checkpw(data.password.encode("utf-8"), account["password"].encode("utf-8")):
             # Return user details if the password matches
             return JSONResponse(
                 content={

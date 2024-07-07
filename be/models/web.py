@@ -9,5 +9,5 @@ class WebAccessData(BaseModel):
     user_id: str
     web_url: str
     title: str
-    access_time: datetime
+    access_time: str
 

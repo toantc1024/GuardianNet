@@ -16,6 +16,7 @@ app = FastAPI( docs_url="/api/guardiannet/docs")
 
 origins = [
     "http://localhost",
+    "https://localhost",
     # "http://localhost:{fe port}",
 ]
 

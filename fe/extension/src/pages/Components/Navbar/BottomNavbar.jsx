@@ -6,7 +6,7 @@ import {
   CHILDREN_PAGE,
   DASHBOARD_PAGE,
 } from '../../../constants/popup_page';
-import { Home, Book, User } from 'iconsax-react';
+import { Home, Book, User, Logout } from 'iconsax-react';
 const IconButton = ({ icon, onClickHandler, isActive, activeIcon }) => {
   return (
     <div
@@ -17,9 +17,9 @@ const IconButton = ({ icon, onClickHandler, isActive, activeIcon }) => {
     </div>
   );
 };
-const BottomNavbar = ({ page, setPage }) => {
+const BottomNavbar = ({ page, setPage, logoutHandler }) => {
   return (
-    <div className="flex py-4 items-center justify-between px-16">
+    <div className="fixed bottom-0 w-full bg-white flex py-4 items-center justify-between px-16">
       <IconButton
         onClickHandler={() => setPage(DASHBOARD_PAGE)}
         icon={
@@ -50,18 +50,16 @@ const BottomNavbar = ({ page, setPage }) => {
       />
 
       <IconButton
-        onClickHandler={() => setPage(CHILDREN_PAGE)}
+        onClickHandler={() => logoutHandler()}
         icon={
-          <User
+          <Logout
             size="32"
             className="text-gray-400 hover:text-violet-200 transition-text ease-in-out-duration-150"
             variant="Bold"
           />
         }
         isActive={page == CHILDREN_PAGE}
-        activeIcon={
-          <User size="32" className="text-green-500" variant="Bold" />
-        }
+        activeIcon={<User size="32" className="text-red-500" variant="Bold" />}
       />
       {/* 
       <IconButton

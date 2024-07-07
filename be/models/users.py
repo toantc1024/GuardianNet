@@ -17,10 +17,10 @@ class UserInfo(BaseModel):
 
     username: str = Field(..., description="Username of the user")
     password: str = Field(..., description="Password of the user")
-    age: str = Field(..., description="Age")
+    age: int = Field(..., description="Age")
     role: str = Field(..., description="Bussiness or normal account")
-    is_subcribed: bool = Field(..., description="Subcribed or not")
-    wallet_address: str = Field(..., description="Wallet address")
+    is_subcribed: Optional[bool] = Field(False, description="Subcribed or not")   
+    wallet_address: Optional[str] =  Field('', description="Wallet address")
 
     def get_context_string(self, context: str):
         return f"{context}{self.password[-6:]}{self.updated_at.strftime('%m%d%Y%H%M%S')}".strip()

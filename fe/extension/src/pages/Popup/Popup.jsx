@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import BottomNavbar from '../Components/Navbar/BottomNavbar';
 import './Popup.css';
 import DashboardPage from '../Components/PopupPages/DashboardPage';
+import LocationPage from '../Components/PopupPages/LocationPage';
 import {
   WEB_FILTERING_PAGE,
   LOCATION_PAGE,
@@ -86,10 +87,29 @@ const Popup = () => {
       if (res && res.currentUser) setCurrentUser(res.currentUser);
     });
   }, []);
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     let user = values;
-    setCurrentUser(user);
-    chrome.storage.sync.set({ currentUser: user });
+    fetch('http://localhost:8000/api/guardiannet/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: values.username,
+        password: values.password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          setCurrentUser(data);
+          console.log('Success:', data);
+          chrome.storage.sync.set({ currentUser: data });
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   };
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
@@ -102,11 +122,19 @@ const Popup = () => {
         </div>
       ) : (
         <>
-          <div className="h-full ">
-            {currentPage == DASHBOARD_PAGE ? <DashboardPage /> : null}
+          <div className="min-h-screen overflow-auto">
+            {currentPage == DASHBOARD_PAGE ? (
+              <DashboardPage currentUser={currentUser} />
+            ) : currentPage === LOCATION_PAGE ? (
+              <LocationPage currentUser={currentUser} />
+            ) : null}
           </div>
           <BottomNavbar
             page={currentPage}
+            logoutHandler={() => {
+              setCurrentUser(null);
+              chrome.storage.sync.remove('currentUser');
+            }}
             setPage={(value) => setCurrentPage(value)}
           />
         </>

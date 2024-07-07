@@ -14,7 +14,25 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     chrome.storage.sync.get('currentUser', function (res) {
       let { user_id } = res['currentUser'];
       // Save request.data to the database
-      // fetch
+      fetch('http://localhost:8000/api/guardiannet/web_access', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: user_id,
+          web_url: request.data.url,
+          title: request.data.title,
+          access_time: new Date().toISOString(),
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Success:', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
     });
   }
 

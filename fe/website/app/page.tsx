@@ -16,7 +16,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import { WalletNotConnectedError } from "@solana/wallet-adapter-base";
 
 //handle wallet balance fixed to 2 decimal numbers without rounding
@@ -24,6 +23,45 @@ export function toFixed(num: number, fixed: number): string {
   const re = new RegExp(`^-?\\d+(?:\\.\\d{0,${fixed || -1}})?`);
   return num.toString().match(re)![0];
 }
+
+import { Coin, Setting2 } from "iconsax-react";
+
+import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
+import { Button, Card, Col, Row, Statistic } from "antd";
+const Stats = () => <div className="h-full w-full px-4 bg-red-400">HE</div>;
+
+import { Carousel } from "antd";
+const contentStyle = {
+  margin: 0,
+  height: "300px",
+  color: "#fff",
+  lineHeight: "300px",
+  textAlign: "center",
+};
+const DashboardCaroseul = ({ currentReward }: any) => {
+  return (
+    <div className="p-2 flex gap-2 flex-col">
+      <Card bordered={false}>
+        <Statistic
+          title="Active"
+          value={currentReward?.reward?.web_access || 0}
+          precision={0}
+          valueStyle={{ color: "#3f8600" }}
+          prefix={<Coin />}
+          suffix="rewards"
+        />
+      </Card>
+    </div>
+  );
+};
+
+const DashboardPage = ({ currentReward }: any) => {
+  return (
+    <>
+      <DashboardCaroseul currentReward={currentReward} />
+    </>
+  );
+};
 
 const WalletConnection = () => {
   const { connection } = useConnection();
@@ -90,17 +128,48 @@ const WalletConnection = () => {
     }
   };
 
+  const currentUser = {
+    user_id: "6689a18dd37c7380d03fda99",
+    name: "fffff",
+  };
+
+  const [currentReward, setCurrentReward] = useState(0);
+  useEffect(() => {
+    (async () => {
+      let response = await fetch(
+        "http://localhost:8000/api/guardiannet/reward/" + currentUser.user_id,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      let data = await response.json();
+
+      // .then((response) => response.json())
+      // .then((data) => {
+      //   setCurrentReward(data);
+      // })
+      // .catch((error) => {
+      //   console.error("Error:", error);
+      //   alert(error.message);
+      // });
+    })();
+  }, []);
+
   const handleDisconnect = async () => {
     disconnect();
   };
 
   return (
-    <>
-      <div className="">{publicKey?.toBase58()}</div>;
-      <button onClick={onClick} disabled={!publicKey}>
-        Send 1 lamport to a random address!
-      </button>
-    </>
+    <div className="h-screen flex flex-col gap-4 w-full  items-center justify-center">
+      <div className="">{publicKey?.toBase58()}</div>
+      <DashboardPage currentReward={currentReward} />
+      <Button onClick={onClick} disabled={!publicKey} className="primary">
+        Widthdraw your reward
+      </Button>
+    </div>
   );
 };
 

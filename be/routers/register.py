@@ -35,7 +35,7 @@ def register_user(
             username=user_name,
             password=hashed_password,
             age=age,
-            is_subscribed=False,  
+            is_subcribed=False,  
             role=role,
             wallet_address="null",
         )
@@ -55,7 +55,7 @@ def register_user(
         content={
             "user_name": user_name,
             "age": age,
-            "is_subscribed": user_info.is_subscribed,
+            "is_subcribed": user_info.is_subcribed,
             "role": role,
         }
     )

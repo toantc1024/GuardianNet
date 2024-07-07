@@ -4,37 +4,59 @@ from bson import ObjectId
 from typing import List
 from datetime import datetime
 from models.web import WebAccessData
+from pydantic import BaseModel
 from constant import Message, Constants
+from db import db
+
 
 
 router = APIRouter(prefix="/api/guardiannet", tags=["Web Access"])
 
-@router.post("/web_access", responses={409: {"model": Message}, 422: {"model": Message}})
+class WebAccessItem(BaseModel):
+    user_id: str
+    web_url: str
+    title: str
+    access_time: str
+
+@router.get("/web_access", responses={409: {"model": Message}, 422: {"model": Message}})
 async def web_access(
-    user_id: str = Form(..., description="Username of the user"),
-    web_url: str = Form(..., description="URL of the website"),
-    title: str = Form(..., description="Title of the website"),
-    access_time: str = Form(..., description="Time of access")
+    data: WebAccessItem
 ):
+    user_id = data.user_id
+    web_url = data.web_url
+    title = data.title
+    access_time = data.access_time
+    
     try:
 
         web_access_info = WebAccessData(
             user_id=user_id,
             web_url=web_url,
             title=title,
-            access_time=datetime.strptime(access_time, '%Y-%m-%d %H:%M:%S'),
+            access_time=access_time
         )
         web_access_info_dict = web_access_info.dict()
         Constants.WEB_ACCESS.insert_one(web_access_info_dict)
-
-        return JSONResponse(
-            content={
+        
+        db.child("dataset").push({
                 "user_id": user_id,
                 "web_url": web_url,
                 "title": title,
                 "access_time": access_time
-            }
-        )
+        })
+        
+        if(db.child("reward/"+user_id).get().val() == None):
+            db.child("reward/"+user_id).set({
+                "web_access": 1
+            })
+        else:
+            db.child("reward/"+user_id).update({
+                "web_access": db.child("reward/"+user_id).get().val()["web_access"] + 1
+            })
+        return {
+            "message": "Web access record created successfully",
+        }
+
     except ValueError as e:
         # Handle Pydantic validation errors
         return JSONResponse(
@@ -46,31 +68,65 @@ async def web_access(
             status_code=500, content={"message": str(e)}
         )
     
-@router.get("/web_access/{user_id}", response_model=List[WebAccessData])
-async def get_web_access_records(user_id: str):
-    try:
-        # Find web access records for the specified user_id
-        web_access_records = list(Constants.WEB_ACCESS.find({"user_id": user_id}))
-        
-        if not web_access_records:
-            raise HTTPException(
-                status_code=404,
-                detail="No web access records found for this user",
-            )
 
-        return JSONResponse(content=web_access_records)
+
+   
+@router.get("/reward/{user_id}", response_model=List[WebAccessData])
+async def get_reward_by_userid(user_id):
+    try:
+        # Retrieve all web access records
+        arr = db.child("reward/"+user_id).get()
+        
+        reward = arr.val()        
+        
+        return JSONResponse(content={"reward": reward})
     
     except Exception as e:
         return JSONResponse(
             status_code=500, content={"message": str(e)}
         )
-    
+
+
+
+   
 @router.get("/web_access/all", response_model=List[WebAccessData])
 async def get_all_web_access_records():
     try:
         # Retrieve all web access records
-        all_web_access_records = list(Constants.WEB_ACCESS.find({}))
-        
+        arr = db.child("dataset").get()
+        all_web_access_records = []
+        for item in arr.each():
+            all_web_access_records.append(item.val())
+            
+        if not all_web_access_records:
+            raise HTTPException(
+                status_code=404,
+                detail="No web access records found in the database",
+            )
+
+        return JSONResponse(content={"data": all_web_access_records})
+    
+    except Exception as e:
+        return JSONResponse(
+            status_code=500, content={"message": str(e)}
+        )
+
+@router.get("/web_access/{user_id}", response_model=List[WebAccessData])
+async def get_web_access_records(user_id: str):
+    try:
+        # Retrieve all web access records
+        arr = db.child("dataset").get()
+        all_web_access_records = []
+        for item in arr.each():
+            res = item.val()
+            if(res["user_id"] == user_id):
+                all_web_access_records.append(res)
+                
+        if not all_web_access_records:
+            raise HTTPException(
+                status_code=404,
+                detail="No web access records found in the database",
+            )
         if not all_web_access_records:
             raise HTTPException(
                 status_code=404,
@@ -83,3 +139,4 @@ async def get_all_web_access_records():
         return JSONResponse(
             status_code=500, content={"message": str(e)}
         )
+ 
